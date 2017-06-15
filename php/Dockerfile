@@ -7,11 +7,12 @@ COPY php.ini /usr/local/etc/php/php.ini
 
 RUN echo "https://mirrors.ustc.edu.cn/alpine/v3.4/main" > /etc/apk/repositories \
     && echo "https://mirrors.ustc.edu.cn/alpine/v3.4/community" >> /etc/apk/repositories \
-    && apk add --update-cache --no-cache autoconf g++ make util-linux-dev re2c libpng-dev icu-dev libmcrypt-dev freetype-dev\
+    && apk add --update-cache --no-cache autoconf g++ make util-linux-dev re2c libpng-dev icu-dev libmcrypt-dev freetype-dev openssl-dev pcre-dev\
     && pecl install redis \
     && pecl install uuid \
     && pecl install xdebug \
-    && docker-php-ext-enable redis uuid xdebug
+    && pecl install mongodb \
+    && docker-php-ext-enable redis uuid xdebug mongodb
 
 RUN wget http://www.xunsearch.com/scws/down/scws-1.2.3.tar.bz2 \
     && tar xvjf scws-1.2.3.tar.bz2 \
