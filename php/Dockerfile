@@ -7,14 +7,17 @@ COPY php.ini /usr/local/etc/php/php.ini
 
 RUN echo "https://mirrors.ustc.edu.cn/alpine/v3.4/main" > /etc/apk/repositories \
     && echo "https://mirrors.ustc.edu.cn/alpine/v3.4/community" >> /etc/apk/repositories \
-    && apk add --update-cache --no-cache autoconf g++ make util-linux-dev re2c libpng-dev icu-dev libmcrypt-dev freetype-dev openssl-dev pcre-dev tzdata \
+    && apk add --update-cache --no-cache \
+        autoconf g++ make util-linux-dev re2c libpng-dev icu-dev libmcrypt-dev freetype-dev \
+        openssl-dev pcre-dev jpeg-dev libtool imagemagick-dev postgresql-dev tzdata \
     && ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 
 RUN pecl install redis \
     && pecl install uuid \
     && pecl install xdebug \
     && pecl install mongodb \
-    && docker-php-ext-enable redis uuid xdebug mongodb
+    && pecl install imagick \
+    && docker-php-ext-enable redis uuid xdebug mongodb imagick
 
 RUN wget http://www.xunsearch.com/scws/down/scws-1.2.3.tar.bz2 \
     && tar xvjf scws-1.2.3.tar.bz2 \
@@ -39,12 +42,14 @@ RUN wget http://www.xunsearch.com/scws/down/scws-1.2.3.tar.bz2 \
     && tar xvjf scws-dict-chs-utf8.tar.bz2 \
     && rm -rf scws-dict-chs-gbk.tar.bz2 scws-dict-chs-utf8.tar.bz2
 
-RUN docker-php-ext-install gd \
+RUN docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
+    && docker-php-ext-install gd \
     && docker-php-ext-install zip \
     && docker-php-ext-install intl \
     && docker-php-ext-install mcrypt \
     && docker-php-ext-install mysqli \
     && docker-php-ext-install pdo_mysql \
+    && docker-php-ext-install pdo_pgsql \
     && curl -o /usr/local/bin/composer https://dl.laravel-china.org/composer.phar \
     && chmod +x /usr/local/bin/composer
 
