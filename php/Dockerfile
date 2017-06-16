@@ -7,8 +7,10 @@ COPY php.ini /usr/local/etc/php/php.ini
 
 RUN echo "https://mirrors.ustc.edu.cn/alpine/v3.4/main" > /etc/apk/repositories \
     && echo "https://mirrors.ustc.edu.cn/alpine/v3.4/community" >> /etc/apk/repositories \
-    && apk add --update-cache --no-cache autoconf g++ make util-linux-dev re2c libpng-dev icu-dev libmcrypt-dev freetype-dev openssl-dev pcre-dev\
-    && pecl install redis \
+    && apk add --update-cache --no-cache autoconf g++ make util-linux-dev re2c libpng-dev icu-dev libmcrypt-dev freetype-dev openssl-dev pcre-dev tzdata \
+    && ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+
+RUN pecl install redis \
     && pecl install uuid \
     && pecl install xdebug \
     && pecl install mongodb \
