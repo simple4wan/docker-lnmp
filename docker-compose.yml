@@ -8,14 +8,14 @@ services:
     volumes:
       - "./nginx/conf.d:/etc/nginx/conf.d"
       - "./nginx/nginx.conf:/etc/nginx/nginx.conf"
-      - "../Www:/www"
+      - "~/Www:/www"
     links:
       - "php"
 
   php:
     build: "./php"
     volumes:
-      - "../Www:/www"
+      - "~/Www:/www"
     links:
       - "mysql"
       - "redis"
