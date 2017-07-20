@@ -9,7 +9,7 @@ RUN echo "https://mirrors.ustc.edu.cn/alpine/v3.4/main" > /etc/apk/repositories 
     && echo "https://mirrors.ustc.edu.cn/alpine/v3.4/community" >> /etc/apk/repositories \
     && apk add --update-cache --no-cache \
         autoconf g++ make util-linux-dev re2c libpng-dev icu-dev libmcrypt-dev freetype-dev \
-        openssl-dev pcre-dev jpeg-dev libtool imagemagick-dev postgresql-dev tzdata \
+        openssl-dev pcre-dev jpeg-dev libtool imagemagick-dev postgresql-dev tzdata linux-headers \
     && ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 
 RUN pecl install redis \
@@ -17,7 +17,8 @@ RUN pecl install redis \
     && pecl install xdebug \
     && pecl install mongodb \
     && pecl install imagick \
-    && docker-php-ext-enable redis uuid xdebug mongodb imagick
+    && pecl install swoole \
+    && docker-php-ext-enable redis uuid xdebug mongodb imagick swoole
 
 RUN wget http://www.xunsearch.com/scws/down/scws-1.2.3.tar.bz2 \
     && tar xvjf scws-1.2.3.tar.bz2 \
