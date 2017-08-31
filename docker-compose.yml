@@ -11,9 +11,18 @@ services:
       - "~/Www:/www"
     links:
       - "php"
+      - "php5"
 
   php:
     build: "./php"
+    volumes:
+      - "~/Www:/www"
+    links:
+      - "mysql"
+      - "redis"
+
+  php5:
+    build: "./php5"
     volumes:
       - "~/Www:/www"
     links:
