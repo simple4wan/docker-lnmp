@@ -14,10 +14,11 @@ RUN echo "https://mirrors.ustc.edu.cn/alpine/v3.4/main" > /etc/apk/repositories 
 
 RUN pecl install redis \
     && pecl install uuid \
+    && pecl install xdebug \
     && pecl install mongodb \
     && pecl install imagick \
     && pecl install swoole \
-    && docker-php-ext-enable redis uuid mongodb imagick swoole
+    && docker-php-ext-enable redis uuid xdebug mongodb imagick swoole
 
 RUN wget http://www.xunsearch.com/scws/down/scws-1.2.3.tar.bz2 \
     && tar xvjf scws-1.2.3.tar.bz2 \
@@ -64,4 +65,5 @@ USER root
 
 RUN echo "auto_prepend_file = \"/home/www-data/.composer/vendor/autoload.php\"" > /usr/local/etc/php/conf.d/docker-php-extend.ini
 
-WORKDIR /www
+
+
