@@ -64,5 +64,4 @@ USER root
 
 RUN echo "auto_prepend_file = \"/home/www-data/.composer/vendor/autoload.php\"" > /usr/local/etc/php/conf.d/docker-php-extend.ini
 
-
-
+WORKDIR /www
