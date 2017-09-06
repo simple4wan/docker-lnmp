@@ -1,48 +1,58 @@
 version: "3"
 services:
   nginx:
-    build: "./nginx"
+    build: ./nginx
     ports:
-      - "80:80"
-      - "443:443"
+      - 80:80
+      - 443:443
+    networks:
+       - overlay
+    depends_on:
+      - php
+      - php5
     volumes:
-      - "./nginx/conf.d:/etc/nginx/conf.d"
-      - "./nginx/nginx.conf:/etc/nginx/nginx.conf"
-      - "~/Www:/www"
-    links:
-      - "php"
-      - "php5"
+      - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ~/Www:/www:delegated
 
   php:
-    build: "./php"
+    build: ./php
+    networks:
+       - overlay
+    depends_on:
+      - mysql
+      - redis
     volumes:
-      - "~/Www:/www"
-    links:
-      - "mysql"
-      - "redis"
+      - ~/Www:/www:delegated
 
   php5:
-    build: "./php5"
+    build: ./php5
+    networks:
+       - overlay
+    depends_on:
+      - mysql
+      - redis
     volumes:
-      - "~/Www:/www"
-    links:
-      - "mysql"
-      - "redis"
+      - ~/Www:/www:delegated
 
   mysql:
-    build: "./mysql"
+    build: ./mysql
+    networks:
+       - overlay
     ports:
-      - "3306:3306"
+      - 3306:3306
     volumes:
-        - "./mysql/data:/var/lib/mysql"
-        - "./mysql/custom.cnf:/etc/mysql/mysql.conf.d/custom.cnf"
-
+      - ./mysql/data:/var/lib/mysql
+      - ./mysql/custom.cnf:/etc/mysql/mysql.conf.d/custom.cnf
 
   redis:
-    build: "./redis"
+    build: ./redis
+    networks:
+       - overlay
     ports:
-      - "6379:6379"
+      - 6379:6379
     volumes:
-      - "./redis/data:/data"
+      - ./redis/data:/data
 
-
+networks:
+  overlay:
