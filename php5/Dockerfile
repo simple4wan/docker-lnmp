@@ -14,10 +14,10 @@ RUN echo "https://mirrors.ustc.edu.cn/alpine/v3.4/main" > /etc/apk/repositories 
 
 RUN pecl install redis \
     && pecl install uuid \
-    && pecl install xdebug \
+    && pecl install xdebug-2.5.5 \
     && pecl install mongodb \
     && pecl install imagick \
-    && pecl install swoole \
+    && pecl install swoole-2.0.11 \
     && docker-php-ext-enable redis uuid xdebug mongodb imagick swoole
 
 RUN wget http://www.xunsearch.com/scws/down/scws-1.2.3.tar.bz2 \
