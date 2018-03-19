@@ -1,15 +1,15 @@
-FROM php:fpm-alpine
+FROM php:7.1-fpm-alpine
 
 EXPOSE 9000
 
 COPY php-fpm.conf /usr/local/etc/php/php-fpm.conf
 COPY php.ini /usr/local/etc/php/php.ini
 
-RUN echo "https://mirrors.ustc.edu.cn/alpine/v3.6/main" > /etc/apk/repositories \
-    && echo "https://mirrors.ustc.edu.cn/alpine/v3.6/community" >> /etc/apk/repositories \
+RUN echo "https://mirrors.ustc.edu.cn/alpine/v3.4/main" > /etc/apk/repositories \
+    && echo "https://mirrors.ustc.edu.cn/alpine/v3.4/community" >> /etc/apk/repositories \
     && apk add --update-cache --no-cache \
         autoconf g++ make util-linux-dev re2c libpng-dev icu-dev libmcrypt-dev freetype-dev \
-        pcre-dev jpeg-dev libtool imagemagick-dev postgresql-dev tzdata linux-headers git \
+        openssl-dev pcre-dev jpeg-dev libtool imagemagick-dev postgresql-dev tzdata linux-headers git \
     && ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 
 RUN pecl install redis \
@@ -18,8 +18,7 @@ RUN pecl install redis \
     && pecl install mongodb \
     && pecl install imagick \
     && pecl install swoole \
-    && pecl install mcrypt-1.0.1 \
-    && docker-php-ext-enable redis uuid xdebug mongodb imagick swoole mcrypt
+    && docker-php-ext-enable redis uuid xdebug mongodb imagick swoole
 
 RUN wget http://www.xunsearch.com/scws/down/scws-1.2.3.tar.bz2 \
     && tar xvjf scws-1.2.3.tar.bz2 \
@@ -48,6 +47,7 @@ RUN docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-di
     && docker-php-ext-install gd \
     && docker-php-ext-install zip \
     && docker-php-ext-install intl \
+    && docker-php-ext-install mcrypt \
     && docker-php-ext-install mysqli \
     && docker-php-ext-install pdo_mysql \
     && docker-php-ext-install pdo_pgsql \
