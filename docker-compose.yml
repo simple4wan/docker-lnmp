@@ -22,6 +22,7 @@ services:
     depends_on:
       - mysql
       - redis
+      - elasticsearch
     volumes:
       - ~/Www:/www:delegated
 
@@ -32,6 +33,7 @@ services:
     depends_on:
       - mysql
       - redis
+      - elasticsearch
     volumes:
       - ~/Www:/www:delegated
 
@@ -53,6 +55,14 @@ services:
       - 6379:6379
     volumes:
       - ./redis/data:/data
+
+  elasticsearch:
+    build: ./elasticsearch
+    networks:
+      - overlay
+    ports:
+      - 9200:9200
+      - 9300:9300
 
 networks:
   overlay:
