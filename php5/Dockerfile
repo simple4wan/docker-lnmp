@@ -5,11 +5,9 @@ EXPOSE 9000
 COPY php-fpm.conf /usr/local/etc/php/php-fpm.conf
 COPY php.ini /usr/local/etc/php/php.ini
 
-RUN echo "https://mirrors.ustc.edu.cn/alpine/v3.4/main" > /etc/apk/repositories \
-    && echo "https://mirrors.ustc.edu.cn/alpine/v3.4/community" >> /etc/apk/repositories \
-    && apk add --update-cache --no-cache \
+RUN apk add --update-cache --no-cache \
         autoconf g++ make util-linux-dev re2c libpng-dev icu-dev libmcrypt-dev freetype-dev \
-        openssl-dev pcre-dev jpeg-dev libtool imagemagick-dev postgresql-dev tzdata linux-headers git sudo\
+        libressl-dev pcre-dev jpeg-dev libtool imagemagick-dev postgresql-dev tzdata linux-headers git sudo libbsd \
     && ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 
 RUN pecl install redis \
