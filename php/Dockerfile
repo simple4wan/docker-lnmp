@@ -10,19 +10,27 @@ RUN apk add --update-cache --no-cache \
         libressl-dev pcre-dev jpeg-dev libtool imagemagick-dev postgresql-dev tzdata linux-headers git sudo libbsd \
     && ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 
-RUN pecl install redis \
+RUN git clone https://git.php.net/repository/pecl/database/mysql.git \
+    && cd mysql \
+    && phpize \
+    && ./configure \
+    && make \
+    && make install \
+    && cd .. \
+    && rm -rf mysql \
+    && pecl install redis \
     && pecl install uuid \
     && pecl install xdebug \
     && pecl install mongodb \
     && pecl install imagick \
     && pecl install swoole \
-    && docker-php-ext-enable redis uuid xdebug mongodb imagick swoole
+    && docker-php-ext-enable mysql redis uuid xdebug mongodb imagick swoole
 
 RUN wget http://www.xunsearch.com/scws/down/scws-1.2.3.tar.bz2 \
     && tar xvjf scws-1.2.3.tar.bz2 \
     && cd scws-1.2.3 \
     && ./configure --prefix=/usr/local/scws \
-    && make \ 
+    && make \
     && make install \
     && cd phpext \
     && phpize \
