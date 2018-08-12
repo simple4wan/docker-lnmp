@@ -2,12 +2,12 @@ FROM php:5-fpm-alpine
 
 EXPOSE 9000
 
-COPY php-fpm.conf /usr/local/etc/php/php-fpm.conf
-COPY php.ini /usr/local/etc/php/php.ini
+COPY custom.php.ini /usr/local/etc/php/conf.d/docker-php-custom.ini
 
-RUN apk add --update-cache --no-cache \
+RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.ustc.edu.cn/g' /etc/apk/repositories \
+    && apk add --update-cache --no-cache \
         autoconf g++ make util-linux-dev re2c libpng-dev icu-dev libmcrypt-dev freetype-dev \
-        libressl-dev pcre-dev jpeg-dev libtool imagemagick-dev postgresql-dev tzdata linux-headers git sudo libbsd \
+        libressl-dev pcre-dev jpeg-dev libtool imagemagick-dev postgresql-dev tzdata linux-headers git sudo libbsd libxml2-dev \
     && ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 
 RUN pecl install redis \
@@ -22,7 +22,7 @@ RUN wget http://www.xunsearch.com/scws/down/scws-1.2.3.tar.bz2 \
     && tar xvjf scws-1.2.3.tar.bz2 \
     && cd scws-1.2.3 \
     && ./configure --prefix=/usr/local/scws \
-    && make \ 
+    && make \
     && make install \
     && cd phpext \
     && phpize \
@@ -50,6 +50,7 @@ RUN docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-di
     && docker-php-ext-install mysqli \
     && docker-php-ext-install pdo_mysql \
     && docker-php-ext-install pdo_pgsql \
+    && docker-php-ext-install soap \
     && curl -o /usr/local/bin/composer https://dl.laravel-china.org/composer.phar \
     && chmod +x /usr/local/bin/composer
 
@@ -61,9 +62,7 @@ RUN composer config -g repo.packagist composer https://packagist.laravel-china.o
 
 USER root
 
-RUN echo "auto_prepend_file = \"/home/www-data/.composer/vendor/autoload.php\"" > /usr/local/etc/php/conf.d/docker-php-extend.ini
+RUN echo "auto_prepend_file = \"/home/www-data/.composer/vendor/autoload.php\"" > /usr/local/etc/php/conf.d/docker-php-composer.ini
 
 
 WORKDIR /www
-
-

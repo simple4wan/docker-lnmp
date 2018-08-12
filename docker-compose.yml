@@ -45,7 +45,6 @@ services:
       - 3306:3306
     volumes:
       - ./mysql/data:/var/lib/mysql
-      - ./mysql/custom.cnf:/etc/mysql/mysql.conf.d/custom.cnf
 
   redis:
     build: ./redis
