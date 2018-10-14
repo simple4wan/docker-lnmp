@@ -9,7 +9,6 @@ services:
        - overlay
     depends_on:
       - php
-      - php5
     volumes:
       - ./nginx/conf.d:/etc/nginx/conf.d
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf
@@ -17,17 +16,6 @@ services:
 
   php:
     build: ./php
-    networks:
-       - overlay
-    depends_on:
-      - mysql
-      - redis
-      - elasticsearch
-    volumes:
-      - ~/Www:/www:delegated
-
-  php5:
-    build: ./php5
     networks:
        - overlay
     depends_on:
