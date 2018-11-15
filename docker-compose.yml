@@ -5,8 +5,6 @@ services:
     ports:
       - 80:80
       - 443:443
-    networks:
-       - overlay
     depends_on:
       - php
     volumes:
@@ -16,8 +14,6 @@ services:
 
   php:
     build: ./php
-    networks:
-       - overlay
     depends_on:
       - mysql
       - redis
@@ -27,8 +23,6 @@ services:
 
   mysql:
     build: ./mysql
-    networks:
-       - overlay
     ports:
       - 3306:3306
     volumes:
@@ -36,8 +30,6 @@ services:
 
   redis:
     build: ./redis
-    networks:
-       - overlay
     ports:
       - 6379:6379
     volumes:
@@ -45,8 +37,6 @@ services:
 
   elasticsearch:
     build: ./elasticsearch
-    networks:
-      - overlay
     ports:
       - 9200:9200
       - 9300:9300
@@ -54,13 +44,10 @@ services:
       - ./elasticsearch/data:/usr/share/elasticsearch/data
 
   portainer:
-    image: portainer/portainer
+    build: ./portainer
     ports:
       - "9000:9000"
     command: -H unix:///var/run/docker.sock
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ./portainer/data:/data
-      
-networks:
-  overlay:
