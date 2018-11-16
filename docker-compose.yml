@@ -37,6 +37,14 @@ services:
 
   elasticsearch:
     build: ./elasticsearch
+    environment:
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms256m -Xmx256m"
+      - "xpack.security.enabled=false"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
     ports:
       - 9200:9200
       - 9300:9300
@@ -46,7 +54,7 @@ services:
   portainer:
     build: ./portainer
     ports:
-      - "9000:9000"
+      - 9000:9000
     command: -H unix:///var/run/docker.sock
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
