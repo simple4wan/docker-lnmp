@@ -10,7 +10,7 @@ services:
     volumes:
       - ./nginx/conf.d:/etc/nginx/conf.d
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf
-      - ~/Www:/www:delegated
+      - ~/Documents:/www:delegated
 
   php:
     build: ./php
@@ -19,7 +19,7 @@ services:
       - redis
       - elasticsearch
     volumes:
-      - ~/Www:/www:delegated
+      - ~/Documents:/www:delegated
 
   mysql:
     build: ./mysql
