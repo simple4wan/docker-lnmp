@@ -11,6 +11,7 @@ services:
       - ./nginx/conf.d:/etc/nginx/conf.d
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf
       - ~/Documents:/Documents:delegated
+    restart: always
 
   php:
     build: ./php
@@ -20,6 +21,7 @@ services:
       - elasticsearch
     volumes:
       - ~/Documents:/Documents:delegated
+    restart: always
 
   mysql:
     build: ./mysql
@@ -27,6 +29,7 @@ services:
       - 3306:3306
     volumes:
       - ./mysql/data:/var/lib/mysql
+    restart: always
 
   redis:
     build: ./redis
@@ -34,6 +37,7 @@ services:
       - 6379:6379
     volumes:
       - ./redis/data:/data
+    restart: always
 
   elasticsearch:
     build: ./elasticsearch
@@ -50,6 +54,7 @@ services:
       - 9300:9300
     volumes:
       - ./elasticsearch/data:/usr/share/elasticsearch/data
+    restart: always
 
   portainer:
     build: ./portainer
@@ -59,3 +64,4 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ./portainer/data:/data
+    restart: always
