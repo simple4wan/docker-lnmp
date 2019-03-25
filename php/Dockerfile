@@ -7,7 +7,7 @@ COPY custom.php.ini /usr/local/etc/php/conf.d/docker-php-custom.ini
 RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.ustc.edu.cn/g' /etc/apk/repositories \
     && apk add --update-cache --no-cache \
         autoconf g++ make util-linux-dev re2c libpng-dev icu-dev libmcrypt-dev freetype-dev \
-        openssl-dev pcre-dev jpeg-dev libtool imagemagick-dev postgresql-dev tzdata linux-headers git sudo libbsd libxml2-dev \
+        openssl-dev pcre-dev jpeg-dev libtool imagemagick imagemagick-dev postgresql-dev tzdata linux-headers git sudo libbsd libxml2-dev \
     && ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 
 RUN git clone https://git.php.net/repository/pecl/database/mysql.git \
