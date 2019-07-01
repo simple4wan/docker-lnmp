@@ -1,4 +1,4 @@
-FROM mysql:5
+FROM mysql
 
 ENV MYSQL_ROOT_PASSWORD root
 

@@ -1,3 +1,3 @@
-FROM docker.elastic.co/elasticsearch/elasticsearch:6.4.2
+FROM docker.elastic.co/elasticsearch/elasticsearch:7.2.0
 
 RUN ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime

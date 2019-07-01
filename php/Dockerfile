@@ -58,13 +58,13 @@ RUN docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-di
     && docker-php-ext-install pdo_mysql \
     && docker-php-ext-install pdo_pgsql \
     && docker-php-ext-install soap \
-    && curl -o /usr/local/bin/composer https://dl.laravel-china.org/composer.phar \
+    && curl -H 'user-agent: Mozilla/5.0 (MSIE 10.0; Windows NT 6.1; Trident/5.0)' -o /usr/local/bin/composer https://dl.laravel-china.org/composer.phar \
     && chmod +x /usr/local/bin/composer
 
 USER www-data
 
 RUN composer config -g repo.packagist composer https://packagist.laravel-china.org \
-    && composer global require "fxp/composer-asset-plugin:^1.3.1" \
+    && composer global require "fxp/composer-asset-plugin" \
     && composer global require "symfony/var-dumper"
 
 USER root

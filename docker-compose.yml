@@ -8,8 +8,8 @@ services:
     depends_on:
       - php
     volumes:
-      - ./nginx/conf.d:/etc/nginx/conf.d
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/conf.d:/etc/nginx/conf.d
       - ~/Documents:/Documents:delegated
     restart: always
 
@@ -20,6 +20,7 @@ services:
       - redis
       - elasticsearch
     volumes:
+      - ./php/custom.php.ini:/usr/local/etc/php/conf.d/docker-php-custom.ini
       - ~/Documents:/Documents:delegated
     restart: always
 
@@ -28,6 +29,7 @@ services:
     ports:
       - 3306:3306
     volumes:
+      - ./mysql/custom.mysql.cnf:/etc/mysql/mysql.conf.d/custom.mysql.cnf
       - ./mysql/data:/var/lib/mysql
     restart: always
 
@@ -36,6 +38,7 @@ services:
     ports:
       - 6379:6379
     volumes:
+      - ./redis/redis.conf:/usr/local/etc/redis/redis.conf
       - ./redis/data:/data
     restart: always
 
