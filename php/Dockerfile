@@ -64,11 +64,14 @@ RUN docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-di
 USER www-data
 
 RUN composer config -g repo.packagist composer https://mirrors.aliyun.com/composer/ \
+    && composer global require "hirak/prestissimo" \
     && composer global require "fxp/composer-asset-plugin" \
     && composer global require "symfony/var-dumper"
 
 USER root
 
 RUN echo "auto_prepend_file = \"/home/www-data/.composer/vendor/autoload.php\"" > /usr/local/etc/php/conf.d/docker-php-composer.ini
+
+VOLUME /Documents
 
 WORKDIR /Documents
