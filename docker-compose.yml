@@ -51,11 +51,3 @@ services:
       - ./portainer/data:/data
     restart: always
 
-  anyproxy:
-    build: ./anyproxy
-    ports:
-      - 8001:8001
-      - 8002:8002
-    volumes:
-      - ./anyproxy/data:/root/.anyproxy
-    restart: always
