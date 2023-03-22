@@ -1,53 +1,59 @@
-version: "3"
+version: "2"
 services:
   nginx:
-    build: ./nginx
+    depends_on:
+      - php7
+    environment:
+      - TZ=Asia/Shanghai
+    image: nginx
     ports:
       - 80:80
       - 443:443
-    depends_on:
-      - php
-    volumes:
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
-      - ./nginx/conf.d:/etc/nginx/conf.d
-      - ~/Documents:/Documents:delegated
     restart: always
-
-  php:
-    build: ./php
+    volumes:
+      - ./nginx/templates:/etc/nginx/templates
+      - ~/Documents:/Documents:delegated
+  php7:
+    build: ./php7
     depends_on:
-      - mysql
+      - mariadb
       - redis
-    volumes:
-      - ./php/custom.php.ini:/usr/local/etc/php/conf.d/docker-php-custom.ini
-      - ~/Documents:/Documents:delegated
+    environment:
+      - TZ=Asia/Shanghai
     restart: always
+    volumes:
+      - ./php7/custom.ini:/usr/local/etc/php/conf.d/custom.ini
+      - ~/Documents:/Documents:delegated
 
-  mysql:
-    build: ./mysql
+  mariadb:
+    environment:
+      - TZ=Asia/Shanghai
+      - MARIADB_ROOT_PASSWORD=root
+    image: mariadb
     ports:
       - 3306:3306
-    volumes:
-      - ./mysql/custom.mysql.cnf:/etc/mysql/mysql.conf.d/custom.mysql.cnf
-      - ./mysql/data:/var/lib/mysql
     restart: always
+    volumes:
+      - ./mariadb/custom.cnf:/etc/mysql/conf.d/custom.cnf
+      - ./mariadb/mysql:/var/lib/mysql
 
   redis:
-    build: ./redis
+    environment:
+      - TZ=Asia/Shanghai
+    image: redis
     ports:
       - 6379:6379
-    volumes:
-      - ./redis/redis.conf:/usr/local/etc/redis/redis.conf
-      - ./redis/data:/data
     restart: always
+    volumes:
+      - ./redis/data:/data
 
   portainer:
-    build: ./portainer
-    ports:
-      - 9000:9000
     command: -H unix:///var/run/docker.sock
+    image: portainer/portainer-ce
+    ports:
+      - 9443:9443
+    restart: always
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ./portainer/data:/data
-    restart: always
 
