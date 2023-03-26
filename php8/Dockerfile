@@ -1,4 +1,4 @@
-FROM php:7-fpm
+FROM php:8-fpm
 
 RUN apt update && apt install -y \
     libmagickwand-dev uuid-dev libpng-dev libzip-dev libpq-dev libssl-dev git
@@ -6,9 +6,9 @@ RUN apt update && apt install -y \
 RUN pecl install imagick \
     && pecl install mongodb \
     && pecl install redis \
-    && printf "no\nyes\nno\nno\n" | pecl install swoole-4.8.13 \
+    && printf "no\nyes\nno\nno\n" | pecl install swoole \
     && pecl install uuid \
-    && pecl install xdebug-3.1.6 \
+    && pecl install xdebug \
     && docker-php-ext-enable imagick mongodb redis swoole uuid xdebug
 
 RUN docker-php-ext-configure gd --with-freetype=/usr/include/ --with-jpeg=/usr/include/ \

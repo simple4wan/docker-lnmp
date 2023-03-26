@@ -3,6 +3,7 @@ services:
   nginx:
     depends_on:
       - php7
+      - php8
     environment:
       - TZ=Asia/Shanghai
     image: nginx
@@ -12,7 +13,9 @@ services:
     restart: always
     volumes:
       - ./nginx/templates:/etc/nginx/templates
+      - ~/.acme.sh:/etc/nginx/.acme.sh
       - ~/Documents:/Documents:delegated
+
   php7:
     build: ./php7
     depends_on:
@@ -23,6 +26,20 @@ services:
     restart: always
     volumes:
       - ./php7/custom.ini:/usr/local/etc/php/conf.d/custom.ini
+      - ~/Documents:/Documents:delegated
+
+  php8:
+    build: ./php8
+    depends_on:
+      - mariadb
+      - redis
+    environment:
+      - TZ=Asia/Shanghai
+    ports:
+      - 9501:9501
+    restart: always
+    volumes:
+      - ./php8/custom.ini:/usr/local/etc/php/conf.d/custom.ini
       - ~/Documents:/Documents:delegated
 
   mariadb:
